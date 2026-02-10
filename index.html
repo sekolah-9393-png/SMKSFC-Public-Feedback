@@ -76,7 +76,7 @@
             const role = document.getElementById('role').value;
             const msg = document.getElementById('message').value;
             
-            // PASTE YOUR URL BELOW BETWEEN THE QUOTES
+            // Your specific Google Web App URL
             const webAppUrl = "https://script.google.com/macros/s/AKfycbwc2VwycFAe6cFepaZJDdiyDxvZF5mt4bgh0Agw99CICoGHGHgVgaRV1k9G3VNA2oCG/exec";
 
             if(!msg) { alert("Please enter your complaint."); return; }
@@ -96,6 +96,7 @@
                 
                 alert("Success! Your concern has been sent to the administrator.");
                 document.getElementById('message').value = "";
+                if(!document.getElementById('isAnon').checked) document.getElementById('userName').value = "";
             } catch (error) {
                 alert("Error sending message. Check your internet connection.");
             } finally {
