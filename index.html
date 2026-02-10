@@ -1,0 +1,32 @@
+async function submitComplaint() {
+    const name = document.getElementById('userName').value || "Not provided";
+    const role = document.getElementById('role').value;
+    const msg = document.getElementById('message').value;
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbwc2VwycFAe6cFepaZJDdiyDxvZF5mt4bgh0Agw99CICoGHGHgVgaRV1k9G3VNA2oCG/exec"; // Replace this!
+
+    if(!msg) { alert("Please enter your complaint."); return; }
+
+    // Show a "Sending..." state
+    const btn = document.querySelector('.btn-submit');
+    btn.innerText = "Sending...";
+    btn.disabled = true;
+
+    const data = { name, role, msg, date: new Date().toLocaleString() };
+
+    try {
+        await fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors', // Essential for Google Apps Script
+            body: JSON.stringify(data)
+        });
+        
+        alert("Success! Your concern has been sent to the administrator.");
+        document.getElementById('message').value = "";
+    } catch (error) {
+        alert("Error sending message. Please try again.");
+        console.error(error);
+    } finally {
+        btn.innerText = "Submit Securely";
+        btn.disabled = false;
+    }
+}
