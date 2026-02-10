@@ -1,32 +1,108 @@
-async function submitComplaint() {
-    const name = document.getElementById('userName').value || "Not provided";
-    const role = document.getElementById('role').value;
-    const msg = document.getElementById('message').value;
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbwc2VwycFAe6cFepaZJDdiyDxvZF5mt4bgh0Agw99CICoGHGHgVgaRV1k9G3VNA2oCG/exec"; // Replace this!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Feedback Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 450px; margin: auto; }
+        h2 { text-align: center; color: #1a73e8; margin-bottom: 25px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9em; }
+        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .anon-wrap { display: flex; align-items: center; margin-bottom: 15px; font-size: 0.85em; }
+        .anon-wrap input { width: auto; margin: 0 10px 0 0; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; transition: 0.2s; }
+        .btn-submit { background: #1a73e8; color: white; }
+        .btn-submit:hover { background: #1557b0; }
+        #qrcode { display: flex; justify-content: center; margin: 20px 0; padding: 10px; background: #fff; }
+    </style>
+</head>
+<body>
 
-    if(!msg) { alert("Please enter your complaint."); return; }
-
-    // Show a "Sending..." state
-    const btn = document.querySelector('.btn-submit');
-    btn.innerText = "Sending...";
-    btn.disabled = true;
-
-    const data = { name, role, msg, date: new Date().toLocaleString() };
-
-    try {
-        await fetch(webAppUrl, {
-            method: 'POST',
-            mode: 'no-cors', // Essential for Google Apps Script
-            body: JSON.stringify(data)
-        });
+    <div id="userView" class="card">
+        <h2>Submit a Complaint</h2>
         
-        alert("Success! Your concern has been sent to the administrator.");
-        document.getElementById('message').value = "";
-    } catch (error) {
-        alert("Error sending message. Please try again.");
-        console.error(error);
-    } finally {
-        btn.innerText = "Submit Securely";
-        btn.disabled = false;
-    }
-}
+        <label>Your Name</label>
+        <input type="text" id="userName" placeholder="Enter your name">
+        
+        <div class="anon-wrap">
+            <input type="checkbox" id="isAnon" onchange="toggleAnon()">
+            <label for="isAnon" style="margin:0;">Submit anonymously</label>
+        </div>
+
+        <label>I am a...</label>
+        <select id="role">
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Parent">Parent</option>
+        </select>
+
+        <label>Details of Concern</label>
+        <textarea id="message" rows="4" placeholder="Please be as specific as possible..."></textarea>
+        
+        <button class="btn-submit" onclick="submitComplaint()">Submit Securely</button>
+        
+        <hr style="margin: 30px 0; opacity: 0.2;">
+        <p style="text-align:center; font-size: 0.8em; color: #666;">Scan QR code to open on your phone:</p>
+        <div id="qrcode"></div>
+    </div>
+
+    <script>
+        // 1. Initialize QR Code
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href,
+            width: 150,
+            height: 150
+        });
+
+        // 2. Anonymity Logic
+        function toggleAnon() {
+            const nameInput = document.getElementById('userName');
+            const isAnon = document.getElementById('isAnon').checked;
+            if(isAnon) {
+                nameInput.value = "Anonymous";
+                nameInput.disabled = true;
+            } else {
+                nameInput.value = "";
+                nameInput.disabled = false;
+            }
+        }
+
+        // 3. Submit to Google Sheets
+        async function submitComplaint() {
+            const name = document.getElementById('userName').value || "Not provided";
+            const role = document.getElementById('role').value;
+            const msg = document.getElementById('message').value;
+            
+            // PASTE YOUR URL BELOW BETWEEN THE QUOTES
+            const webAppUrl = "https://script.google.com/macros/s/AKfycbwc2VwycFAe6cFepaZJDdiyDxvZF5mt4bgh0Agw99CICoGHGHgVgaRV1k9G3VNA2oCG/exec";
+
+            if(!msg) { alert("Please enter your complaint."); return; }
+
+            const btn = document.querySelector('.btn-submit');
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            const data = { name, role, msg, date: new Date().toLocaleString() };
+
+            try {
+                await fetch(webAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    body: JSON.stringify(data)
+                });
+                
+                alert("Success! Your concern has been sent to the administrator.");
+                document.getElementById('message').value = "";
+            } catch (error) {
+                alert("Error sending message. Check your internet connection.");
+            } finally {
+                btn.innerText = "Submit Securely";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
