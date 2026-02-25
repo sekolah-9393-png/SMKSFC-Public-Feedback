@@ -142,6 +142,7 @@
         padding-top: 25px;
     }
 
+        
     #qrcode img {
         border-radius: 8px;
         padding: 10px;
@@ -171,13 +172,18 @@
         </select>
 
         <label for="message">Message</label>
-        <textarea id="message" rows="4" placeholder="Share your thoughts or concerns..."></textarea>
+        <textarea id="message" rows="4" maxlength="200" placeholder="Share your thoughts or concerns..."></textarea>
+        <div id="char-count" style="text-align: right; font-size: 0.75rem; color: #94a3b8; margin-top: -15px; margin-bottom: 15px;">0 / 200</div>
 
         <button id="submitBtn" onclick="submitComplaint()">Submit Securely</button>
 
         <div class="qr-section">
             <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 12px;">Mobile Access</p>
             <div id="qrcode" style="display:flex; justify-content:center;"></div>
+
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 20px; line-height: 1.4;">
+                *Submissions are secure. Your identity remains anonymous unless you choose to provide your name.
+            </p>
         </div>
     </div>
 
@@ -190,6 +196,22 @@
 </div>
 
 <script>
+
+    const messageArea = document.getElementById('message');
+    const charCount = document.getElementById('char-count');
+
+messageArea.addEventListener('input', function() {
+    const length = messageArea.value.length;
+    charCount.textContent = `${length} / 200`;
+    
+    // Turn text red if they hit the limit
+    if (length >= 200) {
+        charCount.style.color = "#ef4444";
+    } else {
+        charCount.style.color = "#94a3b8";
+    }
+});
+    
 // Generate QR Code
 new QRCode(document.getElementById("qrcode"), {
     text: "https://sekolah-9393-png.github.io/SMKSFC-Public-Feedback/", 
@@ -244,6 +266,7 @@ async function submitComplaint() {
 
 </body>
 </html>
+
 
 
 
