@@ -5,26 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Feedback & Complaint Portal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
-        h2 { color: var(--primary); text-align: center; margin-bottom: 1.5rem; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
-        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; cursor: pointer; font-size: 1rem; transition: background 0.3s; }
-        .btn-submit:hover { background: var(--accent); }
-        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
-        
-        /* QR Section Styling */
-        .qr-section { margin-top: 30px; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
-        #qrcode { display: flex; justify-content: center; margin-top: 10px; }
+        :root {
+            --primary-blue: #0ea5e9;       /* Bright, modern light blue */
+            --dark-navy: #0f172a;          /* For text and headers */
+            --bg-soft: #f8fafc;            /* Very light blue-grey background */
+            --bg-dark-blue: #1e293b;       /* A slightly lighter navy for the body */
+            --card-bg: #ffffff;            /* Pure white for the form */
+            --border-color: #e2e8f0;       /* Soft borders */
+            --border-radius: 12px;         /* Rounded, modern corners */
+        }
+
+        body {
+            /* Updated to use the darker blue */
+            background-color: var(--dark-navy); 
+            /* We add a subtle gradient to make it look "cool" and modern */
+            background-image: radial-gradient(circle at top left, #1e293b 0%, #0f172a 100%);
+  
+            color: var(--dark-navy);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 450px;
+            text-align: left; /* Text alignment for labels */
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .school-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .header-section h2 {
+            margin: 0;
+            color: var(--dark-navy);
+            font-size: 1.5rem;
+        }
+
+        .header-section p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        button {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.1s, opacity 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2);
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .qr-section {
+            margin-top: 30px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Submit Your Concern</h2>
+<div class="form-container">
+    <div class="header-section">
+        <img src="https://cdn-icons-png.flaticon.com/512/5351/5351485.png" alt="School Logo" class="school-logo">
+        <h2>Submit Your Concern</h2>
+        <p>Help us improve our campus experience.</p>
+    </div>
     
     <label for="userName">Full Name (Optional)</label>
     <input type="text" id="userName" placeholder="Enter your name or leave blank for anonymous">
@@ -37,28 +145,29 @@
     </select>
 
     <label for="message">Your Complaint/Suggestion</label>
-    <textarea id="message" rows="5" placeholder="How can we help you?"></textarea>
+    <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
 
-    <button class="btn-submit" onclick="submitComplaint()">Submit Securely</button>
+    <button id="submitBtn" onclick="submitComplaint()">Submit Securely</button>
 
     <div class="qr-section">
-        <p style="font-size: 0.9rem; color: #666;">Scan to open this form on your phone</p>
+        <p style="font-size: 0.8rem; color: #64748b;">Scan to open this form on your phone</p>
         <div id="qrcode"></div>
     </div>
 </div>
 
 <script>
-// Replace 'your-username' and 'your-repo' with your actual GitHub info
+// Generate QR Code
 new QRCode(document.getElementById("qrcode"), {
-    text: "https://your-username.github.io/your-repo/", 
-    width: 120,
-    height: 120
+    text: "https://sekolah-9393-png.github.io/SMKSFC-Public-Feedback/", 
+    width: 100,
+    height: 100
 });
 
 async function submitComplaint() {
     const name = document.getElementById('userName').value || "Anonymous";
     const role = document.getElementById('role').value;
     const msg = document.getElementById('message').value;
+    const btn = document.getElementById('submitBtn');
     
     const webAppUrl = "https://script.google.com/macros/s/AKfycbwjF9TzXegrh7Ah1KDpM0ezbA5nFH57V2_MBCSSMTDfat7QT5PLch6kuagL1kWpLs4TFQ/exec";
 
@@ -67,7 +176,6 @@ async function submitComplaint() {
         return;
     }
 
-    const btn = document.querySelector('.btn-submit');
     btn.innerText = "Sending...";
     btn.disabled = true;
 
@@ -97,5 +205,6 @@ async function submitComplaint() {
     }
 }
 </script>
+
 </body>
 </html>
