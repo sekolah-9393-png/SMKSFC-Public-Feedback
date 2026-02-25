@@ -121,30 +121,39 @@
 <body>
 
 <div class="form-container">
-    <div class="header-section">
-        <img src="logo.png" alt="School Logo" class="school-logo">
-        <h2>Submit Your Concern</h2>
-        <p>Help us improve our school experience.</p>
+    <div id="form-content">
+        <div class="header-section">
+            <img src="logo.png" alt="School Logo" class="school-logo">
+            <h2>Submit Your Concern</h2>
+            <p>Help us improve our campus experience.</p>
+        </div>
+        
+        <label for="userName">Full Name (Optional)</label>
+        <input type="text" id="userName" placeholder="Enter your name or leave blank for anonymous">
+
+        <label for="role">Your Role</label>
+        <select id="role">
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Parent">Parent</option>
+        </select>
+
+        <label for="message">Your Complaint/Suggestion</label>
+        <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+
+        <button id="submitBtn" onclick="submitComplaint()">Submit Securely</button>
+
+        <div class="qr-section">
+            <p style="font-size: 0.8rem; color: #64748b;">Scan to open this form on your phone</p>
+            <div id="qrcode"></div>
+        </div>
     </div>
-    
-    <label for="userName">Full Name (Optional)</label>
-    <input type="text" id="userName" placeholder="Enter your name or leave blank for anonymous">
 
-    <label for="role">Your Role</label>
-    <select id="role">
-        <option value="Student">Student</option>
-        <option value="Teacher">Teacher</option>
-        <option value="Parent">Parent</option>
-    </select>
-
-    <label for="message">Your Complaint/Suggestion</label>
-    <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
-
-    <button id="submitBtn" onclick="submitComplaint()">Submit Securely</button>
-
-    <div class="qr-section">
-        <p style="font-size: 0.8rem; color: #64748b;">Scan to open this form on your phone</p>
-        <div id="qrcode"></div>
+    <div id="success-msg" style="display: none; text-align: center; padding: 20px 0;">
+        <div style="font-size: 50px; color: #22c55e; margin-bottom: 20px;">✓</div>
+        <h2 style="color: var(--dark-navy);">Thank You!</h2>
+        <p style="color: #64748b; line-height: 1.6;">Your feedback has been sent securely to the school administration.</p>
+        <button onclick="location.reload()" style="margin-top: 20px; background-color: var(--dark-navy);">Send Another Response</button>
     </div>
 </div>
 
@@ -162,7 +171,9 @@ async function submitComplaint() {
     const msg = document.getElementById('message').value;
     const btn = document.getElementById('submitBtn');
     
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbwjF9TzXegrh7Ah1KDpM0ezbA5nFH57V2_MBCSSMTDfat7QT5PLch6kuagL1kWpLs4TFQ/exec";
+    // Elements to toggle
+    const formContent = document.getElementById('form-content');
+    const successMsg = document.getElementById('success-msg');
 
     if(!msg) {
         alert("Please enter your complaint.");
@@ -179,20 +190,20 @@ async function submitComplaint() {
     formData.append('date', new Date().toLocaleString());
 
     try {
-        await fetch(webAppUrl, {
+        await fetch("https://script.google.com/macros/s/AKfycbwjF9TzXegrh7Ah1KDpM0ezbA5nFH57V2_MBCSSMTDfat7QT5PLch6kuagL1kWpLs4TFQ/exec", {
             method: 'POST',
             mode: 'no-cors', 
             body: formData.toString(),
             headers: { "Content-Type": "application/x-www-form-urlencoded" }
         });
 
-        alert("Success! Your concern has been sent to the administrator.");
-        document.getElementById('message').value = "";
-        document.getElementById('userName').value = "";
+        // HIDE FORM, SHOW SUCCESS
+        formContent.style.display = 'none';
+        successMsg.style.display = 'block';
+
     } catch (error) {
         alert("Error sending message. Check console for details.");
         console.error(error);
-    } finally {
         btn.innerText = "Submit Securely";
         btn.disabled = false;
     }
@@ -201,4 +212,5 @@ async function submitComplaint() {
 
 </body>
 </html>
+
 
