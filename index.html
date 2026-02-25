@@ -7,129 +7,160 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
-        :root {
-            --primary-blue: #0ea5e9;
-            --dark-navy: #0f172a;
-            --bg-dark-blue: #1e293b;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --border-radius: 12px;
-        }
+    /* 1. Import Modern Font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-        body {
-            background-color: var(--dark-navy); 
-            background-image: radial-gradient(circle at top left, #1e293b 0%, #0f172a 100%);
-            color: var(--dark-navy);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
+    :root {
+        --primary-blue: #0ea5e9;
+        --dark-navy: #0f172a;
+        --bg-dark-blue: #1e293b;
+        --card-bg: rgba(255, 255, 255, 0.96); /* Glass effect */
+        --border-color: #e2e8f0;
+        --border-radius: 16px; /* Slightly rounder for a modern look */
+    }
 
-        .form-container {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Slightly deeper shadow for dark mode */
-            width: 100%;
-            max-width: 450px;
-            text-align: left;
-        }
+    body {
+        background-color: var(--dark-navy); 
+        background-image: radial-gradient(circle at top left, #1e293b 0%, #0f172a 100%);
+        color: var(--dark-navy);
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
+    }
 
-        .header-section {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+    /* 2. Entrance Animation */
+    @keyframes formEntrance {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* LOGO STYLING */
-        .school-logo {
-            width: 100px; /* Adjust this size if your logo is too big/small */
-            height: auto;
-            margin: 0 auto 1rem auto;
-            display: block;
-        }
+    .form-container {
+        background: var(--card-bg);
+        backdrop-filter: blur(12px); /* Blur background behind card */
+        padding: 2.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 420px;
+        animation: formEntrance 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .header-section h2 {
-            margin: 0;
-            color: var(--dark-navy);
-            font-size: 1.5rem;
-        }
+    .header-section {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
 
-        .header-section p {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
+    .school-logo {
+        width: 90px;
+        height: auto;
+        margin: 0 auto 1.2rem auto;
+        display: block;
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
+    .header-section h2 {
+        margin: 0;
+        color: var(--dark-navy);
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
 
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius);
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
+    .header-section p {
+        color: #64748b;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+    }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
 
-        button {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 14px 20px;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: transform 0.1s, opacity 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2);
-        }
+    /* 3. Modern Input Focus Halos */
+    input, select, textarea {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 20px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.2s ease;
+        background: #fcfcfd;
+    }
 
-        button:hover { opacity: 0.9; }
-        button:active { transform: scale(0.98); }
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+        transform: translateY(-1px);
+    }
 
-        .qr-section {
-            margin-top: 30px;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
+    /* 4. Interactive Button */
+    button {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, #0284c7 100%);
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
 
-        #qrcode {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-    </style>
-</head>
+    button:hover {
+        opacity: 0.95;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .qr-section {
+        margin-top: 30px;
+        text-align: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 25px;
+    }
+
+    #qrcode img {
+        border-radius: 8px;
+        padding: 10px;
+        background: white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+</style>
+
 <body>
-
 <div class="form-container">
     <div id="form-content">
         <div class="header-section">
             <img src="logo.png" alt="School Logo" class="school-logo">
-            <h2>Submit Your Concern</h2>
-            <p>Help us improve our school experience.</p>
+            <h2>School Portal</h2>
+            <p>Your voice helps us grow.</p>
         </div>
         
         <label for="userName">Full Name (Optional)</label>
-        <input type="text" id="userName" placeholder="Enter your name or leave blank for anonymous">
+        <input type="text" id="userName" placeholder="e.g. John Doe">
 
         <label for="role">Your Role</label>
         <select id="role">
@@ -138,25 +169,23 @@
             <option value="Parent">Parent</option>
         </select>
 
-        <label for="message">Your Complaint/Suggestion</label>
-        <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+        <label for="message">Message</label>
+        <textarea id="message" rows="4" placeholder="Share your thoughts or concerns..."></textarea>
 
         <button id="submitBtn" onclick="submitComplaint()">Submit Securely</button>
 
         <div class="qr-section">
-            <p style="font-size: 0.8rem; color: #64748b;">Scan to open this form on your phone</p>
-            <div id="qrcode"></div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 12px;">Mobile Access</p>
+            <div id="qrcode" style="display:flex; justify-content:center;"></div>
         </div>
     </div>
 
-    <div id="success-msg" style="display: none; text-align: center; padding: 20px 0;">
-    <div style="font-size: 60px; color: #22c55e; margin-bottom: 10px; animation: scaleIn 0.3s ease-out;">✓</div>
-    <h2 style="color: var(--dark-navy); margin-top: 0;">Thank You!</h2>
-    <p style="color: #64748b; line-height: 1.6;">Your feedback has been sent securely to the school administration.</p>
-    
-    <button onclick="location.reload()" style="margin-top: 20px; background-color: var(--primary-blue); font-weight: 600;">
-        Send Another Response
-    </button>
+    <div id="success-msg" style="display: none; text-align: center; padding: 10px 0;">
+        <div style="font-size: 70px; margin-bottom: 10px;">🎉</div>
+        <h2 style="color: var(--dark-navy); font-size: 1.8rem;">Received!</h2>
+        <p style="color: #64748b; line-height: 1.6; margin-bottom: 30px;">Thank you for your feedback. We're on it!</p>
+        <button onclick="location.reload()">Send Another</button>
+    </div>
 </div>
 
 <script>
@@ -214,6 +243,7 @@ async function submitComplaint() {
 
 </body>
 </html>
+
 
 
 
